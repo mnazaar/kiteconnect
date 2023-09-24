@@ -186,7 +186,7 @@ def place_order(row):
             kite_connector_this = kite_connector.KiteConnector()
             kite_connector_this.place_order_real(row, kite_connector_this.connector.TRANSACTION_TYPE_BUY)
             response_status = 'Holding'
-            response_trigger = row['buy_trigger']
+            response_trigger = 0
         else:
             new_buy_trigger = row['ltp'] * 1.01
             if new_buy_trigger < row['buy_trigger']:
