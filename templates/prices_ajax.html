@@ -1,0 +1,13 @@
+
+{% block content %}
+    <div id="df"></div>
+    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript">
+        $('#df').load('/naztrade/refresh_prices'); //Preloads df
+        var timeout = setInterval(reloadDF, 5000);
+
+        function reloadDF () {
+            $('#df').load('/naztrade/refresh_prices');
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,110 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    margin-top: 50px;
+}
+.button-container {
+    margin-top: 30px;
+}
+.textarea-field {
+    width: 400px;
+    height: 200px;
+    padding-left: 20px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+.container {
+  text-align: center;
+  margin-top: 20px;
+}
+h4 {
+  color: #1a0dab;
+}
+p {
+  color: #555;
+  font-size: 18px;
+  text-align: left;
+}
+.form-container {
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.form-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+}
+.form-container .input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.form-container .input-row .input-field {
+  flex-basis: 50%;
+}
+.form-container input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  margin: 16px auto;
+}
+th, td {
+  padding: 8px;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #ddd;
+  width: 40px;
+}
+
+.button-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.button {
+    display: inline-block;
+    margin: 5px;
+    padding: 15px 30px; /* Larger button size */
+    background-color: navy; /* Navy blue color */
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font: Arial;
+}
+
+.input-box {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+    table {
+        font-size: 16px; /* You can adjust the size as needed */
+    }
+
+    th {
+        font-size: 18px; /* You can adjust the size as needed */
+    }
+
+    td {
+        font-size: 14px; /* You can adjust the size as needed */
+    }
+    .impcol {
+            font-size: 18px;
+            font-weight: bold;
+     }
+
+    </style>
+</head>
+<body>
+<P></P>
+Monitorings:
+<table cellpadding="3" cellspacing="3" border=1 >
+    <thead>
+        <tr style="background-color:#a8a8a8">
+            <th>Exchange</th>
+            <th>Share Symbol</th>
+            <th>Cost Price</th>
+            <th>Last Traded Price</th>
+            <th>Original SL</th>
+            <th>Original Tgt</th>
+            <th>Revised SL</th>
+            <th>Revised Tgt</th>
+            <th>Protection At</th>
+            <th>Quantity</th>
+            <th>Investment</th>
+            <th>Current Value</th>
+            <th>Profit</th>
+            <th>Profit %</th>
+            <th>Holding Status</th>
+            <th>Fetch Status</th>
+            <th>Time</th>
+            <th>Count</th>
+            <th>Distance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for index, row in monitorings.iterrows(): %}
+        <tr style="background-color: {{ row['row_colour'] }}">
+            <td>{{ row["exchange"]  }}</td>
+            <td>{{ row["instrument_symbol"] }}</td>
+            <td>{{ "%0.2f"|format(row["cost"]) }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["ltp"]) }}</td>
+            <td>{{ "%0.2f"|format(row["stoploss_original"]) }}</td>
+            <td>{{ "%0.2f"|format(row["target_original"]) }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["revised_stoploss"]) }}</td>
+            <td>{{ "%0.2f"|format(row["revised_target"]) }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["protect_after"]) }}</td>
+            <td>{{ "%0.2f"|format(row["quantity"]) }}</td>
+            <td>{{ "%0.2f"|format(row["investment_amount"]) }}</td>
+            <td>{{ "%0.2f"|format(row["current_value"]) }}</td>
+            <td>{{ "%0.2f"|format(row["profit"]) }}</td>
+            <td>{{ "%0.2f"|format(row["profit_percent"]) }}%</td>
+            <td class = "impcol">{{ row["status"]  }}</td>
+            <td>{{ row["fetch_status"]  }}</td>
+            <td>{{ row["time"]  }}</td>
+            <td>{{ row["count"]  }}</td>
+            <td>{{ row["distance"]  }}%</td>
+
+        <tr>
+        {% endfor %}
+    </tbody>
+</table>
+<P></P>
+<P></P>
+Buying:
+<table cellpadding="3" cellspacing="3" border=1>
+    <thead>
+        <tr style="background-color:#a8a8a8">
+            <th>Exchange</th>
+            <th>Share Symbol</th>
+            <th>Last Traded Price</th>
+            <th>Quantity</th>
+            <th>Trigger Price</th>
+            <th>Holding Status</th>
+            <th>Fetch Status</th>
+            <th>Time</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for index, row in buys.iterrows(): %}
+        <tr style="background-color: {{ row['row_colour'] }}">
+            <td>{{ row["exchange"]  }}</td>
+            <td>{{ row["instrument_symbol"] }}</td>
+            <td>{{ "%0.2f"|format(row["ltp"]) }}</td>
+            <td>{{ "%0.2f"|format(row["quantity"]) }}</td>
+            <td>{{ "%0.2f"|format(row["buy_trigger"]) }}</td>
+            <td>{{ row["status"]  }}</td>
+            <td>{{ row["fetch_status"]  }}</td>
+            <td>{{ row["time"]  }}</td>
+            <td>{{ row["count"]  }}</td>
+
+        <tr>
+        {% endfor %}
+    </tbody>
+</table>
+<P></P>
+<P></P>
+Exited:
+<table cellpadding="3" cellspacing="3" border=1>
+    <thead>
+        <tr style="background-color:#a8a8a8">
+            <th>Exchange</th>
+            <th>Share Symbol</th>
+            <th>Cost Price</th>
+            <th>Last Traded Price</th>
+            <th>Original SL</th>
+            <th>Original Tgt</th>
+            <th>Revised SL</th>
+            <th>Revised Tgt</th>
+            <th>Protection At</th>
+            <th>Quantity</th>
+            <th>Investment</th>
+            <th>Current Value</th>
+            <th>Profit</th>
+            <th>Profit %</th>
+            <th>Holding Status</th>
+            <th>Fetch Status</th>
+            <th>Time</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for index, row in solds.iterrows(): %}
+        <tr style="background-color: {{ row['row_colour'] }}">
+            <td>{{ row["exchange"]  }}</td>
+            <td>{{ row["instrument_symbol"] }}</td>
+            <td>{{ "%0.2f"|format(row["cost"]) }}</td>
+            <td>{{ "%0.2f"|format(row["ltp"]) }}</td>
+            <td>{{ "%0.2f"|format(row["stoploss_original"]) }}</td>
+            <td>{{ "%0.2f"|format(row["target_original"]) }}</td>
+            <td>{{ "%0.2f"|format(row["revised_stoploss"]) }}</td>
+            <td>{{ "%0.2f"|format(row["revised_target"]) }}</td>
+            <td>{{ "%0.2f"|format(row["protect_after"]) }}</td>
+            <td>{{ "%0.2f"|format(row["quantity"]) }}</td>
+            <td>{{ "%0.2f"|format(row["investment_amount"]) }}</td>
+            <td>{{ "%0.2f"|format(row["current_value"]) }}</td>
+            <td>{{ "%0.2f"|format(row["profit"]) }}</td>
+            <td>{{ "%0.2f"|format(row["profit_percent"]) }}%</td>
+            <td>{{ row["status"]  }}</td>
+            <td>{{ row["fetch_status"]  }}</td>
+            <td>{{ row["time"]  }}</td>
+            <td>{{ row["count"]  }}</td>
+
+        <tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+</body>
+</html>
