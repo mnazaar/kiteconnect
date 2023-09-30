@@ -1,8 +1,10 @@
+import os
+
 from kiteconnect import KiteConnect
 import pandas as pd
 
-KITE_API_SECRET = 'nli7zhkdy08a5o4ycj2fe66wedb7i9dk'
-KITE_API_KEY = '7e6gswpbmk4oaah7'
+KITE_API_SECRET = os.environ.get('KITE_API_SECRET')
+KITE_API_KEY = os.environ.get('KITE_API_KEY')
 
 
 class KiteConnector:
