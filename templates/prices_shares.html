@@ -61,7 +61,7 @@ Monitorings:
             <td class = "impcol">{{ "%0.2f"|format(row["revised_stoploss"]) }}</td>
             <td>{{ "%0.2f"|format(row["revised_target"]) }}</td>
             <td class = "impcol">{{ "%0.2f"|format(row["protect_after"]) }}</td>
-            <td>{{ "%0.2f"|format(row["quantity"]) }}</td>
+            <td>{{ row["quantity"]}}</td>
             <td>{{ "%0.2f"|format(row["investment_amount"]) }}</td>
             <td>{{ "%0.2f"|format(row["current_value"]) }}</td>
             <td>{{ "%0.2f"|format(row["profit"]) }}</td>
@@ -86,11 +86,16 @@ Buying:
             <th>Share Symbol</th>
             <th>Last Traded Price</th>
             <th>Quantity</th>
-            <th>Trigger Price</th>
+            <th>Support Trigger Price</th>
+            <th>Breakout Trigger Price</th>
+            <th>Stop Loss</th>
+            <th>Cancel below</th>
             <th>Holding Status</th>
             <th>Fetch Status</th>
             <th>Time</th>
             <th>Count</th>
+            <th>Distance</th>
+            <th>Fund Allotted</th>
         </tr>
     </thead>
     <tbody>
@@ -98,13 +103,18 @@ Buying:
         <tr style="background-color: {{ row['row_colour'] }}">
             <td>{{ row["exchange"]  }}</td>
             <td>{{ row["instrument_symbol"] }}</td>
-            <td>{{ "%0.2f"|format(row["ltp"]) }}</td>
-            <td>{{ "%0.2f"|format(row["quantity"]) }}</td>
-            <td>{{ "%0.2f"|format(row["buy_trigger"]) }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["ltp"]) }}</td>
+            <td class = "impcol">{{ row["quantity"] }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["buy_sr_trigger"]) }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["buy_bo_trigger"]) }}</td>
+            <td>{{ "%0.2f"|format(row["revised_stoploss"]) }}</td>
+            <td class = "impcol">{{ "%0.2f"|format(row["cancel_below"]) }}</td>
             <td>{{ row["status"]  }}</td>
             <td>{{ row["fetch_status"]  }}</td>
             <td>{{ row["time"]  }}</td>
             <td>{{ row["count"]  }}</td>
+            <td>{{ row["distance"]  }}%</td>
+            <td>{{ row["fund_allotted"]  }}</td>
 
         <tr>
         {% endfor %}
@@ -148,7 +158,7 @@ Exited:
             <td>{{ "%0.2f"|format(row["revised_stoploss"]) }}</td>
             <td>{{ "%0.2f"|format(row["revised_target"]) }}</td>
             <td>{{ "%0.2f"|format(row["protect_after"]) }}</td>
-            <td>{{ "%0.2f"|format(row["quantity"]) }}</td>
+            <td>{{ row["quantity"] }}</td>
             <td>{{ "%0.2f"|format(row["investment_amount"]) }}</td>
             <td>{{ "%0.2f"|format(row["current_value"]) }}</td>
             <td>{{ "%0.2f"|format(row["profit"]) }}</td>
