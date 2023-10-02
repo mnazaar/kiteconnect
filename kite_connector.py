@@ -54,10 +54,18 @@ class KiteConnector:
 
     def place_order_real(self, dataframe_row, buy_sell):
         if buy_sell == self.connector.TRANSACTION_TYPE_SELL:
-            quantity = int(dataframe_row['quantity'])
+            quantity = round(dataframe_row['quantity'])
         else:
-            quantity = int(dataframe_row['fund_allotted']/dataframe_row['ltp'])
+            quantity = round(dataframe_row['fund_allotted']/dataframe_row['ltp'])
+
         print(f"Transacting - {dataframe_row.to_string(index=False)}")
+
+        print(f"variety={self.connector.VARIETY_REGULAR}, exchange={dataframe_row['exchange']},"
+              f"tradingsymbol={dataframe_row['instrument_symbol']},  transaction_type={buy_sell}, "
+              f"quantity={quantity},                                   "
+              f"product={self.connector.PRODUCT_CNC},                                "
+              f"order_type={self.connector.ORDER_TYPE_MARKET}")
+
         self.connector.place_order(variety=self.connector.VARIETY_REGULAR, exchange=dataframe_row['exchange'],
                                    tradingsymbol=dataframe_row['instrument_symbol'],
                                    transaction_type=buy_sell, quantity=quantity,
@@ -66,9 +74,9 @@ class KiteConnector:
 
     def place_order_test(self, dataframe_row, buy_sell):
         if buy_sell == self.connector.TRANSACTION_TYPE_SELL:
-            quantity = int(dataframe_row['quantity'])
+            quantity = round(dataframe_row['quantity'])
         else:
-            quantity = int(dataframe_row['fund_allotted']/dataframe_row['ltp'])
+            quantity = round(dataframe_row['fund_allotted']/dataframe_row['ltp'])
 
         print(f"variety={self.connector.VARIETY_REGULAR}, exchange={dataframe_row['exchange']},"
               f"tradingsymbol={dataframe_row['instrument_symbol']},  transaction_type={buy_sell}, "

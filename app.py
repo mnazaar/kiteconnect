@@ -139,11 +139,11 @@ def get_buy_quantity(row):
         distance_to_nearest_trigger = min(abs(distance_to_bo_trigger), abs(distance_to_sr_trigger))
         if distance_to_nearest_trigger == distance_to_bo_trigger:
             if buy_bo_trigger == 0:
-                quantity = int(row['fund_allotted'] / buy_sr_trigger)
+                quantity = round(row['fund_allotted'] / buy_sr_trigger)
             else:
-                quantity = int(row['fund_allotted'] / buy_bo_trigger)
+                quantity = round(row['fund_allotted'] / buy_bo_trigger)
         else:
-            quantity = int(row['fund_allotted'] / buy_sr_trigger)
+            quantity = round(row['fund_allotted'] / buy_sr_trigger)
 
     return quantity
 
@@ -173,10 +173,8 @@ def get_distance_percentage(row):
 
 
 def get_row_colour(row):
-    current_target = row['revised_target']
     original_target = row['target_original']
     current_stoploss = row['revised_stoploss']
-    original_stoploss = row['stoploss_original']
     ltp = row['ltp']
     cost = row['cost']
 
@@ -201,18 +199,22 @@ def place_order(row):
     response_status = row['status']
     response_bo_trigger = row['buy_bo_trigger']
     response_sr_trigger = row['buy_sr_trigger']
+    response_revised_stoploss = row['revised_stoploss']
+
     if row['status'] == 'Holding' and row['ltp'] < row['revised_stoploss']:
         kite_connector_this = kite_connector.KiteConnector()
         kite_connector_this.place_order_real(row, kite_connector_this.connector.TRANSACTION_TYPE_SELL)
         response_status = 'Sold'
         response_bo_trigger = 0
         response_sr_trigger = 0
+        response_revised_stoploss = row['revised_stoploss']
     elif row['status'] == 'Buy' and row['buy_bo_trigger'] > 0 and row['ltp'] > row['buy_bo_trigger']:
         kite_connector_this = kite_connector.KiteConnector()
         kite_connector_this.place_order_real(row, kite_connector_this.connector.TRANSACTION_TYPE_BUY)
         response_status = 'Holding'
         response_bo_trigger = 0
         response_sr_trigger = 0
+        response_revised_stoploss = row['revised_stoploss']
     elif row['status'] == 'Buy' and row['buy_sr_trigger'] > 0 and row['ltp'] < row['buy_sr_trigger']:
         ltp = row['ltp']
         stop_loss = row['revised_stoploss']
@@ -222,16 +224,24 @@ def place_order(row):
             response_status = 'Cancelled'
             response_bo_trigger = 0
             response_sr_trigger = 0
+            response_revised_stoploss = row['revised_stoploss']
         else:
             response_status = 'Buy'
             new_buy_trigger = ltp + (ltp * row['rev_buy_percent'] / 100)
             if row['buy_bo_trigger'] == 0 or new_buy_trigger < row['buy_bo_trigger']:
                 response_bo_trigger = new_buy_trigger
+                sl_gap_percent = row['sl_gap_percent']
+                stop_loss_amount = round(new_buy_trigger * sl_gap_percent / 100, 2)
+                response_revised_stoploss = response_bo_trigger - stop_loss_amount
+
             else:
                 response_bo_trigger = row['buy_bo_trigger']
+                response_revised_stoploss = row['revised_stoploss']
+
             response_sr_trigger = row['buy_sr_trigger']
 
-    return response_status, round_to_nearest_0_05(response_bo_trigger), round_to_nearest_0_05(response_sr_trigger)
+    return response_status, round_to_nearest_0_05(response_bo_trigger), round_to_nearest_0_05(
+        response_sr_trigger), response_revised_stoploss
 
 
 def round_to_nearest_0_05(number):
@@ -263,8 +273,9 @@ def refresh_prices():
         all_prices['distance'] = all_prices.apply(get_distance_percentage, axis=1)
         all_prices['quantity'] = all_prices.apply(get_buy_quantity, axis=1)
 
-        all_prices[['status', 'buy_bo_trigger', 'buy_sr_trigger']] = all_prices.apply(place_order, axis=1,
-                                                                                      result_type='expand')
+        all_prices[['status', 'buy_bo_trigger', 'buy_sr_trigger', 'revised_stoploss']] = all_prices.apply(place_order,
+                                                                                                          axis=1,
+                                                                                                          result_type='expand')
         all_prices.to_csv("./data/monitoring.csv", header=True, index=False)
 
         return render_template_dataframes(all_prices)
