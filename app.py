@@ -217,8 +217,8 @@ def place_order(row):
         response_revised_stoploss = row['revised_stoploss']
     elif row['status'] == 'Buy' and row['buy_sr_trigger'] > 0 and row['ltp'] < row['buy_sr_trigger']:
         ltp = row['ltp']
-        stop_loss = row['revised_stoploss']
-        cancel_at = round_to_nearest_0_05(stop_loss - (stop_loss * row['sl_buy_tolerance_percent'] / 100))
+        cancel_at = round_to_nearest_0_05(
+            row['stoploss_original'] - (row['stoploss_original'] * row['sl_buy_tolerance_percent'] / 100))
 
         if ltp < cancel_at:
             response_status = 'Cancelled'
@@ -265,7 +265,7 @@ def refresh_prices():
         all_prices["current_value"] = round(all_prices["ltp"] * all_prices["quantity"], 2)
         all_prices["investment_amount"] = round(all_prices["cost"] * all_prices["quantity"], 2)
         all_prices["profit"] = round(all_prices["current_value"] - all_prices["investment_amount"], 2)
-        all_prices["profit_percent"] = all_prices["profit"] * 100 / all_prices["investment_amount"]
+        all_prices["profit_percent"] = round(all_prices["profit"] * 100 / all_prices["investment_amount"], 2)
         all_prices["count"] = all_prices["count"] + 1
         all_prices['revised_stoploss'] = all_prices.apply(get_revised_stoploss, axis=1)
         all_prices['revised_target'] = all_prices.apply(get_revised_target, axis=1)
@@ -289,7 +289,7 @@ def refresh_prices():
 
 def add_cancel_at(row):
     return round_to_nearest_0_05(
-        row['revised_stoploss'] - (row['revised_stoploss'] * row['sl_buy_tolerance_percent'] / 100))
+        row['stoploss_original'] - (row['stoploss_original'] * row['sl_buy_tolerance_percent'] / 100))
 
 
 def render_template_dataframes(all_prices):
