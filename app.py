@@ -113,6 +113,18 @@ def get_revised_stoploss(row):
     return current_stop_loss
 
 
+def is_protected_now(row):
+    ltp = row['ltp']
+    protect_after = row['protect_after']
+
+    currently_protected = row['protected']
+
+    if ltp > protect_after and row['status'] == "Holding":
+        currently_protected = "Yes"
+
+    return currently_protected
+
+
 def get_revised_target(row):
     ltp = row['ltp']
     current_gap_percent = row['tgt_gap_percent']
@@ -185,6 +197,8 @@ def get_row_colour(row):
         color = '#AB9EFF'  ##Blue
     elif ltp < current_stoploss:
         color = '#C80372'  ##Red
+    elif row['protected'] == "Yes":
+        color = '#00cc99'  ##in between green
     elif ltp > original_target:
         color = '#099346'  ##green
     elif profit >= 0:
@@ -203,10 +217,10 @@ def place_order(row):
 
     if row['status'] == 'Holding' and row['ltp'] < row['revised_stoploss']:
         kite_connector_this = kite_connector.KiteConnector()
-        kite_connector_this.place_order_real(row, kite_connector_this.connector.TRANSACTION_TYPE_SELL)
-        response_status = 'Sold'
-        response_bo_trigger = 0
-        response_sr_trigger = 0
+        #kite_connector_this.place_order_real(row, kite_connector_this.connector.TRANSACTION_TYPE_SELL)
+        #response_status = 'Sold'
+        #response_bo_trigger = 0
+        #response_sr_trigger = 0
         response_revised_stoploss = row['revised_stoploss']
     elif row['status'] == 'Buy' and row['buy_bo_trigger'] > 0 and row['ltp'] > row['buy_bo_trigger']:
         kite_connector_this = kite_connector.KiteConnector()
@@ -272,6 +286,7 @@ def refresh_prices():
         all_prices['row_colour'] = all_prices.apply(get_row_colour, axis=1)
         all_prices['distance'] = all_prices.apply(get_distance_percentage, axis=1)
         all_prices['quantity'] = all_prices.apply(get_buy_quantity, axis=1)
+        all_prices['protected'] = all_prices.apply(is_protected_now, axis=1)
 
         all_prices[['status', 'buy_bo_trigger', 'buy_sr_trigger', 'revised_stoploss']] = all_prices.apply(place_order,
                                                                                                           axis=1,
